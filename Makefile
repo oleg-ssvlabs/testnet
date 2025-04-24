@@ -7,6 +7,10 @@ CONFIG_FILE=./internal/blockchain/params.yaml
 .PHONY: default
 default: run
 
+.PHONY: blockchain-clean
+blockchain-clean:
+	kurtosis clean -a
+
 .PHONY: build
 build:
 	go build -o ${BINARY_PATH} ${EXEC_DIRECTORY}
