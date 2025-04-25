@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-func Initialize() {
+func Initialize(level slog.Level) {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: slog.LevelInfo,
+		Level: level,
 	}))
 
 	slog.SetDefault(logger)
