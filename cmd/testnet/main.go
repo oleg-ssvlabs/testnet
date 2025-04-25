@@ -19,5 +19,5 @@ func main() {
 	}
 	slog.
 		With("response", response).
-		Info("blockchain service started")
+		Info("blockchain service started. Deploying SSV contracts")
 }
