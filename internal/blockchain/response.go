@@ -17,7 +17,13 @@ type ELContext struct {
 }
 
 type ConfigResponse struct {
-	AllParticipants       []Participant `json:"all_participants"`
-	NetworkID             string        `json:"network_id"`
-	FinalGenesisTimestamp string        `json:"final_genesis_timestamp"`
+	AllParticipants       []Participant      `json:"all_participants"`
+	NetworkID             string             `json:"network_id"`
+	FinalGenesisTimestamp string             `json:"final_genesis_timestamp"`
+	PreFundedAccounts     []PrefundedAccount `json:"pre_funded_accounts"`
+}
+
+type PrefundedAccount struct {
+	Address    string `json:"address"`
+	PrivateKey string `json:"private_key"`
 }

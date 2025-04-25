@@ -47,9 +47,10 @@ func kurtosisCmd() string {
 }
 
 type BlockchainResponse struct {
-	ConsensusNodeURL string
-	ExecutionNodeRPC string
-	ExecutionNodeWS  string
+	ConsensusNodeURL  string
+	ExecutionNodeRPC  string
+	ExecutionNodeWS   string
+	PreFundedAccounts []PrefundedAccount `json:"pre_funded_accounts"`
 }
 
 func RunFromSDK(ctx context.Context) (BlockchainResponse, error) {
@@ -98,8 +99,9 @@ func buildResponse(cfg ConfigResponse) BlockchainResponse {
 	participant := cfg.AllParticipants[0]
 
 	return BlockchainResponse{
-		ConsensusNodeURL: participant.CLContext.BeaconHTTPURL,
-		ExecutionNodeRPC: participant.ELContext.RpcHttpUrl,
-		ExecutionNodeWS:  participant.ELContext.WsUrl,
+		ConsensusNodeURL:  participant.CLContext.BeaconHTTPURL,
+		ExecutionNodeRPC:  participant.ELContext.RpcHttpUrl,
+		ExecutionNodeWS:   participant.ELContext.WsUrl,
+		PreFundedAccounts: cfg.PreFundedAccounts,
 	}
 }
