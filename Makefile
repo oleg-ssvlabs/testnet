@@ -1,8 +1,6 @@
-EXEC_DIRECTORY=./cmd/cli
+EXEC_DIRECTORY=./cmd/testnet
 BINARY_PATH=${EXEC_DIRECTORY}/bin/testnet
 BINARY_DIR=${EXEC_DIRECTORY}/bin
-
-CONFIG_FILE=./internal/blockchain/params.yaml
 
 .PHONY: default
 default: run
@@ -14,7 +12,6 @@ blockchain-clean:
 .PHONY: build
 build:
 	go build -o ${BINARY_PATH} ${EXEC_DIRECTORY}
-	@cp $(CONFIG_FILE) $(BINARY_DIR)/
 
 .PHONY: run
 run: build
