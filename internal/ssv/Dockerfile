@@ -7,7 +7,6 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git curl bash jq
 
 # Clone with --depth 1 and force pull to get latest
-# TODO: what is this repository?
 RUN git clone --branch foundry --depth 1 https://github.com/Zacholme7/ssv-network . 
 RUN cd . && git fetch --all && git reset --hard origin/foundry
 
