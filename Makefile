@@ -5,9 +5,13 @@ BINARY_DIR=${EXEC_DIRECTORY}/bin
 .PHONY: default
 default: run
 
-.PHONY: blockchain-clean
-blockchain-clean:
+.PHONY: kurtosis-clean
+kurtosis-clean:
 	kurtosis clean -a
+
+.PHONY: kurtosis-show
+kurtosis-show:
+	kurtosis enclave inspect localnet
 
 .PHONY: build
 build:
@@ -16,6 +20,10 @@ build:
 .PHONY: run
 run: build
 	${BINARY_PATH}
+
+.PHONY: observability-clean
+observability-clean:
+	docker ps -q --filter "label=stack=localnet-observability" | xargs -r docker rm -f
 
 .PHONY: clean
 clean:
