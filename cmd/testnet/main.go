@@ -4,32 +4,31 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/oleg-ssvlabs/testnet/internal/blockchain"
+	"github.com/oleg-ssvlabs/testnet/configs"
+	"github.com/oleg-ssvlabs/testnet/internal/localnet"
 	"github.com/oleg-ssvlabs/testnet/internal/logger"
-	"github.com/oleg-ssvlabs/testnet/internal/ssv"
+	"github.com/oleg-ssvlabs/testnet/internal/observability"
 )
-
-const withChain = false
 
 func main() {
 	ctx := context.Background()
 	logger.Initialize(slog.LevelDebug)
 
-	if withChain {
-		slog.Info("starting blockchain service")
-		response, err := blockchain.RunFromSDK(ctx)
+	if configs.App.WithLocalnet {
+		slog.Info("starting network")
+		err := localnet.Start(ctx)
 		if err != nil {
 			panic(err)
 		}
-		slog.
-			With("response", response).
-			Info("blockchain service started. Deploying SSV contracts")
 	}
 
-	slog.Info("deploying SSV contracts")
+	slog.Info("network service started.")
 
-	ssvService := ssv.NewService()
-	if err := ssvService.Deploy(ctx, "", ""); err != nil {
-		panic(err)
+	if configs.App.WithObservability {
+		slog.Info("Starting observability services")
+		if err := observability.Start(ctx); err != nil {
+			panic(err)
+		}
 	}
+
 }
