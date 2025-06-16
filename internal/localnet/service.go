@@ -2,7 +2,6 @@ package localnet
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"log/slog"
 
@@ -42,8 +41,26 @@ func Start(ctx context.Context) error {
 	defer cancel()
 
 	var jsonResponse string
+
 	for output := range outputCh {
 		slog.Debug(output.String())
+
+		info := output.GetInfo()
+		if info != nil {
+			slog.Info(info.GetInfoMessage())
+		}
+
+		if pr := output.GetProgressInfo(); pr != nil {
+			for _, info := range pr.GetCurrentStepInfo() {
+				slog.Info(info,
+					slog.Any("step_number", pr.GetCurrentStepNumber()),
+					slog.Any("total_steps", pr.GetTotalSteps()),
+				)
+			}
+		}
+		if i := output.GetInstruction(); i != nil {
+			slog.Info("executing instruction", slog.Any("instruction", i.ExecutableInstruction))
+		}
 
 		ev := output.GetRunFinishedEvent()
 		if ev != nil && ev.SerializedOutput != nil {
@@ -51,13 +68,9 @@ func Start(ctx context.Context) error {
 		}
 	}
 
-	var cfg any
-	err = json.Unmarshal([]byte(jsonResponse), &cfg)
-	if err != nil {
-		return errors.Join(err, errors.New("failed to unmarshal json response"))
-	}
-
-	slog.Debug("response unmarshaled", slog.Any("response", cfg))
+	slog.Info("Kurtosis package launched",
+		slog.String("package", kurtosisPackageName),
+		slog.String("response", jsonResponse))
 
 	return nil
 }

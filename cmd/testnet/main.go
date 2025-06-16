@@ -12,17 +12,17 @@ import (
 
 func main() {
 	ctx := context.Background()
-	logger.Initialize(slog.LevelDebug)
+	logger.Initialize(slog.LevelInfo)
 
 	if configs.App.WithLocalnet {
-		slog.Info("starting network")
+		slog.Info("starting localnet")
 		err := localnet.Start(ctx)
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	slog.Info("network service started.")
+	slog.Info("localnet started.")
 
 	if configs.App.WithObservability {
 		slog.Info("Starting observability services")
