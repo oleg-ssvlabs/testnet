@@ -31,8 +31,7 @@ observability-clean:
 	docker ps -aq --filter "label=${OBSERVABILITY_LABEL}" | xargs -r docker rm -f
 
 .PHONY: clean
-clean:
-	go clean
+clean: observability-clean kurtosis-clean
 	
 .PHONY: test
 test:
